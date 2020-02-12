@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const inputContainter = document.getElementById('input-container');
     const canvas = document.getElementById('canvas');
-    const heightMax = 600,
-        widthMax = 600;
     // let position = document.getElementById('canvas')
     // let positionOffset = offset(position)
     // console.log(positionOffset.left, positionOffset.top)
@@ -21,8 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         circleBtn = document.getElementById('circle-btn'),
         triangleBtn = document.getElementById('triangle-btn');
 
-    let shapesArray = [],
-        shapes = 0;
+    let shapesArray = [];
 
     let shapeOutput = document.getElementById('shape-output'),
         heightOutput = document.getElementById('height-output'),
@@ -36,23 +33,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let height = document.getElementById("rect-height").value;
         let width = document.getElementById("rect-width").value;
-        rect = new Rectangle(height, width);
+        rectangle = new Rectangle(height, width);
     });
 
     //click Square btn to display the shape's input dimensions in the canvas       
     squareBtn.addEventListener('click', function () {
         let sideLength = document.getElementById("squ-length").value;
-        square = new Square(sideLength);
+        square = new Square(sideLength, sideLength, sideLength);
     });
 
     //click Circle btn to display the shape's input dimensions in the canvas       
     circleBtn.addEventListener('click', function () {
-        new Circle();
+        let radius = document.getElementById("cir-radius").value;
+        circle = new Circle((radius*2), (radius*2), radius);
     });
 
     //click Triangle btn to display the shape's input dimensions in the canvas       
     triangleBtn.addEventListener('click', function () {
-        new Triangle();
+        let height = document.getElementById("tri-height").value;
+        triangle = new Triangle(height, height, height);
     });
 
 
@@ -61,11 +60,27 @@ document.addEventListener('DOMContentLoaded', function () {
             this.height = height;
             this.width = width;
             // this.bound();
-            // this.makeShape();
+            this.canvas_x = canvas.offsetWidth;
+            if (this.canvas_x <= this.width || 600 <= this.height) {
+                alert(`Dimensions too large. Must be under ${this.canvas_x}px`)
+            } else {
+                this.createShape();
+            }
+
         }
-        // bound() {
-        //     xStart
-        // }
+
+        createShape() {
+            //if the user input is bigger than the canvas dimensioins, then don't create the shape and alert 'too big'
+            this.div = document.createElement('div');
+            this.div.style.position = 'absolute'
+            this.div.style.opacity = `60%`;
+            console.log(this.canvas_x)
+            this.div.style.top = `${Math.floor(Math.random() * (600 - this.height))}px`;
+            this.div.style.left = `${Math.floor(Math.random() * (this.canvas_x - this.width))}px`;
+            this.div.addEventListener('dblclick', function () {
+                this.parentNode.removeChild(this)
+            });
+        };
     };
 
     class Rectangle extends Shape {
@@ -78,24 +93,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         createRectangle() {
-            shapes++
-            this.div = document.createElement('div');
+            // shapes++
+
+            // this.div = document.createElement('div');
             this.div.className = 'rectangle';
-            this.div.id = shapes
-            this.div.style.position = 'absolute'
-            this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
-            this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
+            // this.div.id = shapes
+
             this.div.style.height = `${this.height}px`;
             this.div.style.width = `${this.width}px`;
             canvas.appendChild(this.div);
-            // console.log(this)
 
             this.div.addEventListener('click', () => {
                 this.aboutShape();
             });
         }
 
-        //when a shape in the canvas is clicked, display its values in the output container
+        //when a rectangle in the canvas is clicked, display its values in the output container
         aboutShape() {
             let shapeVal = this.div.className
             shapeOutput.value = shapeVal
@@ -103,9 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
             heightOutput.value = heightVal
             let widthVal = this.div.style.width
             widthOutput.value = widthVal
-            let areaVal = `${this.height * this.width}px`
+            let areaVal = `${Math.floor(this.height * this.width)}px`
             areaOutput.value = areaVal
-            let perimeterVal = `${(this.height * 2) + (this.width * 2)}px`
+            let perimeterVal = `${Math.floor((this.height * 2) + (this.width * 2))}px`
             perimeterOutput.value = perimeterVal
             radiusOutput.value = 'N/A'
         }
@@ -113,41 +126,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     class Square extends Shape {
-        constructor(sideLength) {
-            super();
+        constructor(height, width, sideLength) {
+            super(height, width);
             this.sideLength = sideLength;
             this.createSquare();
             shapesArray.push(this);
         }
 
         createSquare() {
-            shapes++
-            this.div = document.createElement('div');
+            // shapes++
             this.div.className = 'square';
-            this.div.id = shapes
-            this.div.style.position = 'absolute'
-            this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
-            this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
-            this.div.style.sideLength = `${this.sideLength}px`;
+            // this.div.id = shapes
+            // this.div.style.position = 'absolute'
+            // this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
+            // this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
+            // this.div.style.height = `${this.sideLength}px`;
+            this.div.style.width = `${this.sideLength}px`;
+            this.div.style.height = `${this.sideLength}px`
             canvas.appendChild(this.div);
-            // console.log(this)
 
             this.div.addEventListener('click', () => {
                 this.aboutShape();
             });
         }
 
-        //when a shape in the canvas is clicked, display its values in the output container
+        //when a square in the canvas is clicked, display its values in the output container
         aboutShape() {
             let shapeVal = this.div.className
             shapeOutput.value = shapeVal
-            let heightVal = this.div.style.sideLength
+            let heightVal = this.div.style.height
             heightOutput.value = heightVal
-            let widthVal = this.div.style.sideLength
+            let widthVal = this.div.style.width
             widthOutput.value = widthVal
-            let areaVal = `${this.sideLength * 2}px`
+            let areaVal = `${Math.floor(Math.pow(this.sideLength, 2))}px`
             areaOutput.value = areaVal
-            let perimeterVal = `${this.sideLength * 4}px`
+            let perimeterVal = `${Math.floor(this.sideLength * 4)}px`
             perimeterOutput.value = perimeterVal
             radiusOutput.value = 'N/A'
         }
@@ -155,61 +168,90 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     class Circle extends Shape {
-        constructor(radius) {
-            super();
+        constructor(height, width, radius) {
+            super(height, width);
             this.radius = radius;
             this.createCircle();
             shapesArray.push(this);
         }
 
         createCircle() {
-            shapes++
-            this.div = document.createElement('div');
+            // shapes++
             this.div.className = 'circle';
-            this.div.id = shapes
-            this.div.style.position = 'absolute'
-            this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
-            this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
-            // this.div.style.radius = `${this.radius}px`;
-            this.div.style.height = `${this.height * 2}px`;
-            this.div.style.width = `${this.width * 2}px`;
+            // this.div.id = shapes
+            // this.div.style.position = 'absolute'
+            // this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
+            // this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
+            this.div.style.radius = `${this.radius}px`;
+            this.div.style.height = `${this.radius * 2}px`;
+            this.div.style.width = `${this.radius * 2}px`;
             canvas.appendChild(this.div);
-            // console.log(this)
 
             this.div.addEventListener('click', () => {
                 this.aboutShape();
             });
         }
 
-        //when a shape in the canvas is clicked, display its values in the output container
+        //when a circle in the canvas is clicked, display its values in the output container
         aboutShape() {
             let shapeVal = this.div.className
             shapeOutput.value = shapeVal
             heightOutput.value = 'N/A'
             widthOutput.value = 'N/A'
-            let areaVal = `${Math.PI * this.radius * this.radius}px`
-            // let areaVal = `${Math.PI * Math.pow(this.radius, 2)}px`
+            // let areaVal = `${Math.PI * this.radius * this.radius}px`
+            let areaVal = `${Math.floor(Math.PI * Math.pow(this.radius, 2))}px`
             areaOutput.value = areaVal
-            let perimeterVal = `${2 * Math.PI * this.radius}px`
+            let perimeterVal = `${Math.floor(2 * Math.PI * this.radius)}px`
             perimeterOutput.value = perimeterVal
             let radiusVal = this.div.style.radius
             radiusOutput.value = radiusVal
         }
+
+        
     };
 
     class Triangle extends Shape {
-        constructor(height, width) {
+        constructor(height, width, triangle_height) {
             super(height, width)
-            this.height = height;
-            this.width = width;
-            this.renderTriangle();
+            this.tri_height = triangle_height;
+            this.createTriangle();
+            shapesArray.push(this);
         }
-        aboutShape() {
-            //not finished
-            console.log(`${this.height}, ${this.width}`)
-        }
-    };
 
+        createTriangle() {
+            // shapes++
+            this.div.className = 'triangle';
+            // this.div.id = shapes
+            // this.div.style.position = 'absolute'
+            // this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
+            // this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
+            this.div.style.height = `0px`;
+            this.div.style.width = `0px`;
+            this.div.style.borderRight = `${this.tri_height}px solid transparent`
+            this.div.style.borderBottom = `${this.tri_height}px solid #ffff00`
+            canvas.appendChild(this.div);
+
+            this.div.addEventListener('click', () => {
+                this.aboutShape();
+            });
+        }
+
+        //when a rectangle in the canvas is clicked, display its values in the output container
+        aboutShape() {
+            let shapeVal = this.div.className
+            shapeOutput.value = shapeVal
+            let heightVal = this.div.style.height
+            heightOutput.value = heightVal
+            let widthVal = this.div.style.width
+            widthOutput.value = widthVal
+            let areaVal = `${Math.floor(0.5 * Math.pow(this.height, 2))}px`
+            areaOutput.value = areaVal
+            let perimeterVal = `${Math.floor(2 * this.height + (Math.sqrt(2)) * this.height)}px`
+            perimeterOutput.value = perimeterVal
+            radiusOutput.value = 'N/A'
+        }
+
+    };
 
 });
 
