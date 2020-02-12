@@ -1,18 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // function offset(el) {
-    //     var rect = el.getBoundingClientRect(),
-    //     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-    //     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    //     return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
-    // }    
-
     const inputContainter = document.getElementById('input-container');
     const canvas = document.getElementById('canvas');
-    // let position = document.getElementById('canvas')
-    // let positionOffset = offset(position)
-    // console.log(positionOffset.left, positionOffset.top)
-
 
     let rectangleBtn = document.getElementById('rectangle-btn'),
         squareBtn = document.getElementById('square-btn'),
@@ -45,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //click Circle btn to display the shape's input dimensions in the canvas       
     circleBtn.addEventListener('click', function () {
         let radius = document.getElementById("cir-radius").value;
-        circle = new Circle((radius*2), (radius*2), radius);
+        circle = new Circle((radius * 2), (radius * 2), radius);
     });
 
     //click Triangle btn to display the shape's input dimensions in the canvas       
@@ -59,15 +48,13 @@ document.addEventListener('DOMContentLoaded', function () {
         constructor(height, width) {
             this.height = height;
             this.width = width;
-            // this.bound();
             this.canvas_x = canvas.offsetWidth;
             if (this.canvas_x <= this.width || 600 <= this.height) {
                 alert(`Dimensions too large. Must be under ${this.canvas_x}px`)
             } else {
                 this.createShape();
-            }
-
-        }
+            };
+        };
 
         createShape() {
             //if the user input is bigger than the canvas dimensioins, then don't create the shape and alert 'too big'
@@ -93,16 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         createRectangle() {
-            // shapes++
-
-            // this.div = document.createElement('div');
             this.div.className = 'rectangle';
-            // this.div.id = shapes
-
             this.div.style.height = `${this.height}px`;
             this.div.style.width = `${this.width}px`;
             canvas.appendChild(this.div);
-
             this.div.addEventListener('click', () => {
                 this.aboutShape();
             });
@@ -124,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-
     class Square extends Shape {
         constructor(height, width, sideLength) {
             super(height, width);
@@ -134,13 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         createSquare() {
-            // shapes++
             this.div.className = 'square';
-            // this.div.id = shapes
-            // this.div.style.position = 'absolute'
-            // this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
-            // this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
-            // this.div.style.height = `${this.sideLength}px`;
             this.div.style.width = `${this.sideLength}px`;
             this.div.style.height = `${this.sideLength}px`
             canvas.appendChild(this.div);
@@ -164,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
             perimeterOutput.value = perimeterVal
             radiusOutput.value = 'N/A'
         }
-
     };
 
     class Circle extends Shape {
@@ -176,12 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         createCircle() {
-            // shapes++
             this.div.className = 'circle';
-            // this.div.id = shapes
-            // this.div.style.position = 'absolute'
-            // this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
-            // this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
             this.div.style.radius = `${this.radius}px`;
             this.div.style.height = `${this.radius * 2}px`;
             this.div.style.width = `${this.radius * 2}px`;
@@ -198,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
             shapeOutput.value = shapeVal
             heightOutput.value = 'N/A'
             widthOutput.value = 'N/A'
-            // let areaVal = `${Math.PI * this.radius * this.radius}px`
             let areaVal = `${Math.floor(Math.PI * Math.pow(this.radius, 2))}px`
             areaOutput.value = areaVal
             let perimeterVal = `${Math.floor(2 * Math.PI * this.radius)}px`
@@ -206,8 +173,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let radiusVal = this.div.style.radius
             radiusOutput.value = radiusVal
         }
-
-        
     };
 
     class Triangle extends Shape {
@@ -219,18 +184,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         createTriangle() {
-            // shapes++
             this.div.className = 'triangle';
-            // this.div.id = shapes
-            // this.div.style.position = 'absolute'
-            // this.div.style.top = `${Math.floor(Math.random() * 600)}px`;
-            // this.div.style.left = `${Math.floor(Math.random() * 600)}px`;
             this.div.style.height = `0px`;
             this.div.style.width = `0px`;
             this.div.style.borderRight = `${this.tri_height}px solid transparent`
             this.div.style.borderBottom = `${this.tri_height}px solid #ffff00`
             canvas.appendChild(this.div);
-
             this.div.addEventListener('click', () => {
                 this.aboutShape();
             });
@@ -250,9 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
             perimeterOutput.value = perimeterVal
             radiusOutput.value = 'N/A'
         }
-
     };
-
 });
 
 
