@@ -22,25 +22,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let height = document.getElementById("rect-height").value;
         let width = document.getElementById("rect-width").value;
-        rectangle = new Rectangle(height, width);
+        new Rectangle(height, width);
     });
 
     //click Square btn to display the shape's input dimensions in the canvas       
     squareBtn.addEventListener('click', function () {
         let sideLength = document.getElementById("squ-length").value;
-        square = new Square(sideLength, sideLength, sideLength);
+        new Square(sideLength, sideLength, sideLength);
     });
 
     //click Circle btn to display the shape's input dimensions in the canvas       
     circleBtn.addEventListener('click', function () {
         let radius = document.getElementById("cir-radius").value;
-        circle = new Circle((radius * 2), (radius * 2), radius);
+        new Circle((radius * 2), (radius * 2), radius);
     });
 
     //click Triangle btn to display the shape's input dimensions in the canvas       
     triangleBtn.addEventListener('click', function () {
         let height = document.getElementById("tri-height").value;
-        triangle = new Triangle(height, height, height);
+        new Triangle(height, height, height);
     });
 
 
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.div = document.createElement('div');
             this.div.style.position = 'absolute'
             this.div.style.opacity = `60%`;
-            console.log(this.canvas_x)
             this.div.style.top = `${Math.floor(Math.random() * (600 - this.height))}px`;
             this.div.style.left = `${Math.floor(Math.random() * (this.canvas_x - this.width))}px`;
             this.div.addEventListener('dblclick', function () {
@@ -199,9 +198,9 @@ document.addEventListener('DOMContentLoaded', function () {
         aboutShape() {
             let shapeVal = this.div.className
             shapeOutput.value = shapeVal
-            let heightVal = this.div.style.height
+            let heightVal = `${this.tri_height}px`
             heightOutput.value = heightVal
-            let widthVal = this.div.style.width
+            let widthVal = `${this.tri_height}px`
             widthOutput.value = widthVal
             let areaVal = `${Math.floor(0.5 * Math.pow(this.height, 2))}px`
             areaOutput.value = areaVal
