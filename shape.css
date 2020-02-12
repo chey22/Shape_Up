@@ -19,7 +19,8 @@
 #output {
     border: solid black 2px;
     background-color: gold;
-    /* display: inline; */
+    font-size: 30px;
+    text-align: center;
 }
 
 #container {
